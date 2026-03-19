@@ -1,15 +1,18 @@
 FROM amazoncorretto:25-alpine-jdk
 LABEL org.opencontainers.image.authors="Haiyo.Lunarstar!"
 
-RUN apk upgrade --no-cache \
-    && apk --no-cache add bash bash-completion bash-doc ca-certificates curl wget \
-	  && update-ca-certificates
 RUN apk add --no-cache \
+    bash \
+    bash-completion \
+    ca-certificates \
+    curl \
+    wget \
     openconnect \
     vpnc \
-    bash \
     iproute2 \
-    ca-certificates
+    && update-ca-certificates
 
-# We use the standard vpnc-script included in the apk
-ENTRYPOINT ["openconnect", "--protocol=gp"]
+COPY setup.sh /setup.sh
+RUN chmod +x /setup.sh
+
+ENTRYPOINT ["/setup.sh"]
