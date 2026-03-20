@@ -15,8 +15,11 @@ docker run --rm \
   -e VPN_PASS="YourSecurePassword123" \
   -e VPN_CERT="pin-sha256:Xsbmmi..." \
   -e VPN_GATEWAY="External_Gateway" \
-  LunarstarFurry/docker-GlobalProtect-OpenConnect
+  lunarstarfurry/globalprotect-openconnect
 ```
+
+## Docker Hub
+https://hub.docker.com/r/lunarstarfurry/globalprotect-openconnect
 
 ## 🛠️ Configuration Variables
 
