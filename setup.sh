@@ -28,7 +28,6 @@ exec echo "$VPN_PASS" | openconnect \
     --user="$VPN_USER" \
     --passwd-on-stdin \
     --script=/usr/share/vpnc/vpnc-script \
-    --non-inter \
     --allow-insecure-crypto \
     $CERT_FLAG \
     $GATEWAY_FLAG \
