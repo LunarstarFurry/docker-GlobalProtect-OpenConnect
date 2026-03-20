@@ -26,7 +26,7 @@ https://hub.docker.com/r/lunarstarfurry/globalprotect-openconnect
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `VPN_SERVER` | The HTTPS address of your VPN Portal/Gateway | `https://vpn.company.com` |
-| `VPN_USER` | Your VPN username (Use `DOMAIN\user` format if required by your organization) | `CORP\wei-en.fan` |
+| `VPN_USER` | Your VPN username (Use `DOMAIN\user` format if required by your organization) | `CORP\lunarstar` |
 | `VPN_PASS` | Your VPN password (store securely using Docker secrets in production) | `YourSecurePassword123` |
 | `VPN_CERT` | The SHA256 pin of the server certificate (required for self-signed certificates to prevent MITM attacks) | `pin-sha256:Xsbmmi...` |
 | `VPN_GATEWAY` | The specific Auth Group or Gateway name to connect to | `External_Gateway` |
