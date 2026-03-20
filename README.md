@@ -35,4 +35,3 @@ https://hub.docker.com/r/lunarstarfurry/globalprotect-openconnect
 
 - **Base Image**: `amazoncorretto:25-alpine-jdk`
 - **VPN Client**: OpenConnect (GlobalProtect Protocol)
-- **Protocol Support**: ESP/IPsec with automatic SSL legacy renegotiation fix
