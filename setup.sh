@@ -25,6 +25,8 @@ echo "Connecting to GlobalProtect at $VPN_SERVER..."
 # Added $GATEWAY_FLAG to satisfy the "Please select GlobalProtect gateway" prompt
 exec echo "$VPN_PASS" | openconnect \
     --protocol=gp \
+    --os=win \
+    --useragent="GlobalProtect/5.2.0-8" \
     --user="$VPN_USER" \
     --passwd-on-stdin \
     --allow-insecure-crypto \
