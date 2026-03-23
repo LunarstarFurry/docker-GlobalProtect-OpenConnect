@@ -30,6 +30,7 @@ https://hub.docker.com/r/lunarstarfurry/globalprotect-openconnect
 | `VPN_PASS` | Your VPN password | `YourSecurePassword123` |
 | `VPN_CERT` | The SHA256 pin of the server certificate (required for self-signed certificates to prevent MITM attacks) | `pin-sha256:Xsbmmi...` |
 | `VPN_GATEWAY` | The specific Auth Group or Gateway name to connect to | `External_Gateway` |
+| `CUSTOM_ROUTES` | Surgical Routing Hook. Defines specific routes to pin to specific interfaces. Format: IP/MASK:INTERFACE,IP/MASK:INTERFACE | `192.168.62.3:ppp0,10.218.0.0/24:tun0` |
 
 ## 📜 Technical Details
 
