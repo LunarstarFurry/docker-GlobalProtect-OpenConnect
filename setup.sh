@@ -1,29 +1,20 @@
 #!/bin/bash
 
-# 1. Ensure TUN device exists
 if [ ! -c /dev/net/tun ]; then
     mkdir -p /dev/net/tun
     mknod /dev/net/tun c 10 200
     chmod 600 /dev/net/tun
 fi
 
-# 2. Handle the Certificate Pin variable
 CERT_FLAG=""
-if [ -n "$VPN_CERT" ]; then
-    CERT_FLAG="--servercert $VPN_CERT"
-fi
+[ -n "$VPN_CERT" ] && CERT_FLAG="--servercert $VPN_CERT"
 
-# 3. Handle the Gateway selection (The "Auth Group")
 GATEWAY_FLAG=""
-if [ -n "$VPN_GATEWAY" ]; then
-    GATEWAY_FLAG="--authgroup $VPN_GATEWAY"
-fi
+[ -n "$VPN_GATEWAY" ] && GATEWAY_FLAG="--authgroup $VPN_GATEWAY"
 
 echo "Connecting to GlobalProtect at $VPN_SERVER..."
 
-# 4. Execute the connection
-# Added $GATEWAY_FLAG to satisfy the "Please select GlobalProtect gateway" prompt
-exec echo "$VPN_PASS" | openconnect \
+echo "$VPN_PASS" | openconnect \
     --protocol=gp \
     --os=win \
     --useragent="GlobalProtect/5.2.0-8" \
@@ -32,4 +23,28 @@ exec echo "$VPN_PASS" | openconnect \
     --allow-insecure-crypto \
     $CERT_FLAG \
     $GATEWAY_FLAG \
-    "$VPN_SERVER"
+    "$VPN_SERVER" &
+
+if [ -n "$CUSTOM_ROUTES" ]; then
+    echo "Waiting for tunnel to initialize for custom routing..."
+    for i in {1..30}; do
+        if [ -d /sys/class/net/tun0 ]; then
+            echo "Tunnel found! Applying surgical routes..."
+            ip route del 10.0.0.0/8 dev tun0 2>/dev/null
+            ip route del 172.16.0.0/12 dev tun0 2>/dev/null
+            ip route del 192.168.0.0/16 dev tun0 2>/dev/null
+            
+            # Apply your specific Unraid variables (Format: IP:DEV,IP:DEV)
+            IFS=',' read -ra ADDR_LIST <<< "$CUSTOM_ROUTES"
+            for entry in "${ADDR_LIST[@]}"; do
+                ROUTE=$(echo $entry | cut -d: -f1)
+                DEV=$(echo $entry | cut -d: -f2)
+                ip route add "$ROUTE" dev "$DEV" 2>/dev/null
+                echo "Fixed: $ROUTE via $DEV"
+            done
+            break
+        fi
+        sleep 1
+    done
+fi
+wait
